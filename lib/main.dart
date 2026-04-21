@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(const MyApp());
@@ -32,14 +30,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final player = AudioPlayer();
-
   final _sub1 = TextEditingController();
   final _sub2 = TextEditingController();
   final _sub3 = TextEditingController();
 
   String _resultGPA = "0.00"; //GPA result
-  String _statusText = "Enter your marks"; //comment
 
   void _calculateGPA() {
     setState(() {
@@ -52,17 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
       double gpaValue = (avg / 100) * 4.0;
 
       _resultGPA = gpaValue.toStringAsFixed(2);
-
-      if (gpaValue >= 3.67) {
-        _statusText = "Excellent! Dean's List!";
-      } else if (gpaValue >= 3.00) {
-        _statusText = "Good!";
-      } else {
-        _statusText = "Try harder next time!";
-      }
     });
-
-    player.play(AssetSource('audio/done.wav'));
   }
 
   @override
@@ -81,9 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 10), //space above logo
-                Image.asset('assets/images/uum_logo.png', scale: 1.5),
-
                 const SizedBox(height: 20),
                 _buildField("Enter your score for Subject 1", _sub1), //inputs
                 _buildField("Enter your score for Subject 2", _sub2),
@@ -101,20 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.star, color: Colors.amber),
-                    const SizedBox(width: 15), //space btwn star
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "GPA: $_resultGPA",
-                          style: GoogleFonts.lato(
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(_statusText, style: const TextStyle(fontSize: 16)),
-                      ],
+                      children: [Text("GPA: $_resultGPA")],
                     ),
                   ],
                 ),
@@ -131,12 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: const EdgeInsets.all(8.0), //textfield
       child: TextField(
         controller: controller, //save input in controller
-        decoration: InputDecoration(
-          //decor for box
-          labelText:
-              label, //before click label inside box, after click top of box
-          border: const OutlineInputBorder(), //box
-        ),
       ),
     );
   }
