@@ -34,9 +34,27 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final player = AudioPlayer();
 
-  final _sub1 = TextEditingController();
-  final _sub2 = TextEditingController();
-  final _sub3 = TextEditingController();
+  final _mark1 = TextEditingController();
+  final _mark2 = TextEditingController();
+  final _mark3 = TextEditingController();
+
+  final _ch1 = TextEditingController();
+  final _ch2 = TextEditingController();
+  final _ch3 = TextEditingController();
+
+  double _getGradePoint(double mark) {
+    if (mark >= 80) return 4.00;
+    if (mark >= 75) return 3.67;
+    if (mark >= 70) return 3.33;
+    if (mark >= 65) return 3.00;
+    if (mark >= 60) return 2.67;
+    if (mark >= 55) return 2.33;
+    if (mark >= 50) return 2.00;
+    if (mark >= 45) return 1.67;
+    if (mark >= 40) return 1.33;
+    if (mark >= 35) return 1.00;
+    return 0.00;
+  }
 
   String _resultGPA = "0.00"; //GPA result
   String _statusText = "Enter your marks"; //comment
@@ -44,21 +62,36 @@ class _MyHomePageState extends State<MyHomePage> {
   void _calculateGPA() {
     setState(() {
       double mark1 =
-          double.tryParse(_sub1.text) ?? 0; // if null, return 0 (abc or empty)
-      double mark2 = double.tryParse(_sub2.text) ?? 0;
-      double mark3 = double.tryParse(_sub3.text) ?? 0;
+          double.tryParse(_mark1.text) ?? 0; // if null, return 0 (abc or empty)
+      double mark2 = double.tryParse(_mark2.text) ?? 0;
+      double mark3 = double.tryParse(_mark3.text) ?? 0;
 
-      double avg = (mark1 + mark2 + mark3) / 3;
-      double gpaValue = (avg / 100) * 4.0;
+      double ch1 = double.tryParse(_ch1.text) ?? 0;
+      double ch2 = double.tryParse(_ch2.text) ?? 0;
+      double ch3 = double.tryParse(_ch3.text) ?? 0;
 
-      _resultGPA = gpaValue.toStringAsFixed(2);
+      double totalCredits = ch1 + ch2 + ch3;
 
-      if (gpaValue >= 3.67) {
-        _statusText = "Excellent! Dean's List!";
-      } else if (gpaValue >= 3.00) {
-        _statusText = "Good!";
-      } else {
-        _statusText = "Try harder next time!";
+      if (totalCredits > 0) {
+        double totalPoints =
+            (_getGradePoint(mark1) * ch1) +
+            (_getGradePoint(mark2) * ch2) +
+            (_getGradePoint(mark3) * ch3);
+
+        double gpaValue = totalPoints / totalCredits;
+        _resultGPA = gpaValue.toStringAsFixed(2);
+
+        if (gpaValue >= 3.75) {
+          _statusText = "Excellent!";
+        } else if (gpaValue >= 3.00) {
+          _statusText = "Good!";
+        } else if (gpaValue >= 2.33) {
+          _statusText = "Satisfactory!";
+        } else if (gpaValue >= 2.00) {
+          _statusText = "Pass";
+        } else {
+          _statusText = "Fail";
+        }
       }
     });
 
@@ -84,10 +117,50 @@ class _MyHomePageState extends State<MyHomePage> {
                 const SizedBox(height: 10), //space above logo
                 Image.asset('assets/images/uum_logo.png', scale: 1.5),
 
-                const SizedBox(height: 20),
-                _buildField("Enter your score for Subject 1", _sub1), //inputs
-                _buildField("Enter your score for Subject 2", _sub2),
-                _buildField("Enter your score for Subject 3", _sub3),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: _buildField("Enter Mark for Subject 1", _mark1),
+                    ),
+                    const SizedBox(width: 10), //padding btwn boxes
+                    SizedBox(
+                      width: 100, //ch box
+                      child: _buildField("Credit Hours", _ch1),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: _buildField("Enter Mark for Subject 2", _mark2),
+                    ),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 100,
+                      child: _buildField("Credit Hours", _ch2),
+                    ),
+                  ],
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 200,
+                      child: _buildField("Enter Mark for Subject 3", _mark3),
+                    ),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 100,
+                      child: _buildField("Credit Hours", _ch3),
+                    ),
+                  ],
+                ),
 
                 const SizedBox(height: 10),
                 ElevatedButton(
@@ -128,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildField(String label, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.all(8.0), //textfield
+      padding: const EdgeInsets.all(4.0), //textfield
       child: TextField(
         controller: controller, //save input in controller
         decoration: InputDecoration(
