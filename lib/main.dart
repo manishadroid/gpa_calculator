@@ -121,12 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200,
+                      width: 250, //mark box
                       child: _buildField("Enter Mark for Subject 1", _mark1),
                     ),
                     const SizedBox(width: 10), //padding btwn boxes
                     SizedBox(
-                      width: 100, //ch box
+                      width: 150, //ch box
                       child: _buildField("Credit Hours", _ch1),
                     ),
                   ],
@@ -136,12 +136,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200,
+                      width: 250,
                       child: _buildField("Enter Mark for Subject 2", _mark2),
                     ),
                     const SizedBox(width: 10),
                     SizedBox(
-                      width: 100,
+                      width: 150,
                       child: _buildField("Credit Hours", _ch2),
                     ),
                   ],
@@ -151,12 +151,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(
-                      width: 200,
+                      width: 250,
                       child: _buildField("Enter Mark for Subject 3", _mark3),
                     ),
                     const SizedBox(width: 10),
                     SizedBox(
-                      width: 100,
+                      width: 150,
                       child: _buildField("Credit Hours", _ch3),
                     ),
                   ],
@@ -201,7 +201,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildField(String label, TextEditingController controller) {
     return Padding(
-      padding: const EdgeInsets.all(4.0), //textfield
+      padding: const EdgeInsets.all(8.0), //textfield
       child: TextField(
         controller: controller, //save input in controller
         decoration: InputDecoration(
