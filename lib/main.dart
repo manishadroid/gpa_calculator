@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final player = AudioPlayer();
+
   final _sub1 = TextEditingController();
   final _sub2 = TextEditingController();
   final _sub3 = TextEditingController();
@@ -57,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
         _statusText = "Try harder next time!";
       }
     });
+
+    player.play(AssetSource('audio/done.wav'));
   }
 
   @override
@@ -75,6 +80,9 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const SizedBox(height: 10), //space above logo
+                Image.asset('assets/images/uum_logo.png', scale: 1.5),
+
                 const SizedBox(height: 20),
                 _buildField("Enter your score for Subject 1", _sub1), //inputs
                 _buildField("Enter your score for Subject 2", _sub2),
