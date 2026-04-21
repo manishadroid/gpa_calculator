@@ -101,6 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    const Icon(Icons.star, color: Colors.amber),
+                    const SizedBox(width: 15), //space btwn star
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
