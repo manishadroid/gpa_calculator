@@ -1,0 +1,143 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:audioplayers/audioplayers.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color.fromARGB(255, 87, 154, 185),
+        ),
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final player = AudioPlayer();
+
+  final _sub1 = TextEditingController();
+  final _sub2 = TextEditingController();
+  final _sub3 = TextEditingController();
+
+  String _resultGPA = "0.00"; //GPA result
+  String _statusText = "Enter your marks"; //comment
+
+  void _calculateGPA() {
+    setState(() {
+      double mark1 =
+          double.tryParse(_sub1.text) ?? 0; // if null, return 0 (abc or empty)
+      double mark2 = double.tryParse(_sub2.text) ?? 0;
+      double mark3 = double.tryParse(_sub3.text) ?? 0;
+
+      double avg = (mark1 + mark2 + mark3) / 3;
+      double gpaValue = (avg / 100) * 4.0;
+
+      _resultGPA = gpaValue.toStringAsFixed(2);
+
+      if (gpaValue >= 3.67) {
+        _statusText = "Excellent! Dean's List!";
+      } else if (gpaValue >= 3.00) {
+        _statusText = "Good!";
+      } else {
+        _statusText = "Try harder next time!";
+      }
+    });
+
+    player.play(AssetSource('audio/done.wav'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'GPA Calculator',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 10), //space above logo
+                Image.asset('assets/images/uum_logo.png', scale: 1.5),
+
+                const SizedBox(height: 20),
+                _buildField("Enter your score for Subject 1", _sub1), //inputs
+                _buildField("Enter your score for Subject 2", _sub2),
+                _buildField("Enter your score for Subject 3", _sub3),
+
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _calculateGPA,
+                  child: const Text(
+                    "Calculate GPA",
+                    style: TextStyle(fontSize: 16, color: Colors.purple),
+                  ),
+                ),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.star, color: Colors.amber),
+                    const SizedBox(width: 15), //space btwn star
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "GPA: $_resultGPA",
+                          style: GoogleFonts.lato(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(_statusText, style: const TextStyle(fontSize: 16)),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0), //textfield
+      child: TextField(
+        controller: controller, //save input in controller
+        decoration: InputDecoration(
+          //decor for box
+          labelText:
+              label, //before click label inside box, after click top of box
+          border: const OutlineInputBorder(), //box
+        ),
+      ),
+    );
+  }
+}
