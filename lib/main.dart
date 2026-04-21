@@ -35,6 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final _sub3 = TextEditingController();
 
   String _resultGPA = "0.00"; //GPA result
+  String _statusText = "Enter your marks"; //comment
 
   void _calculateGPA() {
     setState(() {
@@ -47,6 +48,14 @@ class _MyHomePageState extends State<MyHomePage> {
       double gpaValue = (avg / 100) * 4.0;
 
       _resultGPA = gpaValue.toStringAsFixed(2);
+
+      if (gpaValue >= 3.67) {
+        _statusText = "Excellent! Dean's List!";
+      } else if (gpaValue >= 3.00) {
+        _statusText = "Good!";
+      } else {
+        _statusText = "Try harder next time!";
+      }
     });
   }
 
@@ -85,7 +94,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [Text("GPA: $_resultGPA")],
+                      children: [
+                        Text("GPA: $_resultGPA"),
+                        Text(_statusText, style: const TextStyle(fontSize: 16)),
+                      ],
                     ),
                   ],
                 ),
