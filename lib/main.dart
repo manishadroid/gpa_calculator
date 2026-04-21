@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 void main() {
@@ -103,7 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("GPA: $_resultGPA"),
+                        Text(
+                          "GPA: $_resultGPA",
+                          style: GoogleFonts.lato(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                         Text(_statusText, style: const TextStyle(fontSize: 16)),
                       ],
                     ),
@@ -122,6 +129,12 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: const EdgeInsets.all(8.0), //textfield
       child: TextField(
         controller: controller, //save input in controller
+        decoration: InputDecoration(
+          //decor for box
+          labelText:
+              label, //before click label inside box, after click top of box
+          border: const OutlineInputBorder(), //box
+        ),
       ),
     );
   }
